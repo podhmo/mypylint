@@ -64,12 +64,12 @@ in myplugin/plugin.py. It is enable to `ignore.register_ignore_module_pattern()`
 
 .. code-blcok:: python
 
-def register(linter, manager=MANAGER):
-    transforms.register_transforms(manager)
-    fakes.register_transforms(manager)
+  def register(linter, manager=MANAGER):
+      transforms.register_transforms(manager)
+      fakes.register_transforms(manager)
 
-    # if you want to ignore test module, this function is useful.
-    ignore.register_ignore_module_pattern(manager, ".+\.tests?\..+") # this is!
+      # if you want to ignore test module, this function is useful.
+      ignore.register_ignore_module_pattern(manager, ".+\.tests?\..+") # this is!
 
 The setting, such as above, can ignore "foo.tests.bar", "boo.tests.test_foo", .. and so on.
 
