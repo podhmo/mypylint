@@ -52,5 +52,7 @@ setup(name='mypylint',
       tests_require=tests_require,
       test_suite="mypylint.tests",
       entry_points="""
+[console_scripts]
+mypylint = mypylint:main
 """)
 
