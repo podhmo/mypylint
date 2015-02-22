@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 from filegen import Filegen
+import inspect
 
 
 def source_code(fg):
@@ -15,22 +16,31 @@ register = plugin.register""")
 # -*- coding:utf-8 -*-
 from . import transforms
 from . import fakes
+from . import ignore
 from astroid import MANAGER
 
 
 def register(linter, manager=MANAGER):
     transforms.register_transforms(manager)
-    fakes.register_transforms(manager)""")
+    fakes.register_transforms(manager)
+
+    # if you want to ignore test module, this function is useful.
+    # ignore.register_ignore_module_pattern(manager, ".+\.tests?\..+")
+""")
 
     with fg.dir("transforms"):
         with fg.file("__init__.py") as wf:
             wf.write("""\
 def register_transforms(manager):
-    pass""")
+    pass
+""")
     with fg.file("injection.py") as wf:
-        import inspect
         from mypylint import injection
         with open(inspect.getsourcefile(injection)) as rf:
+            wf.write(rf.read())
+    with fg.file("ignore.py") as wf:
+        from mypylint import ignore
+        with open(inspect.getsourcefile(ignore)) as rf:
             wf.write(rf.read())
 
     with fg.dir("fakes"):
