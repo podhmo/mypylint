@@ -27,8 +27,15 @@ def register(manager, d, filename):
         if module.name == package_name:
             return
 
-        for name in fake.locals:
-            module.locals[name] = fake.locals[name]
+        def rec_set(target, fake):
+            if not hasattr(fake, "locals"):
+                return
+            for name in fake.locals:
+                if name not in target.locals:
+                    target.locals[name] = fake.locals[name]
+                else:
+                    rec_set(target.locals[name][0], fake.locals[name][0])
+        rec_set(module, fake)
     manager.register_transform(nodes.Module, set_fake_locals)
 
 
