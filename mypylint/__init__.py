@@ -24,15 +24,36 @@ def register(linter, manager=MANAGER):
 
     with fg.dir("transforms"):
         with fg.file("__init__.py") as wf:
-            wf.write("""
-from .. import fakes
+            wf.write("""\
 def register_transforms(manager):
     pass""")
+    with fg.file("injection.py") as wf:
+        import inspect
+        from mypylint import injection
+        with open(inspect.getsourcefile(injection)) as rf:
+            wf.write(rf.read())
+
     with fg.dir("fakes"):
+        with fg.file("foo_bar_boo.py") as wf:
+            wf.write("""\
+# used by register_fake_module()
+class Dummy:
+    id = None
+""")
         with fg.file("__init__.py") as wf:
-            wf.write("""
+            wf.write("""\
+import os.path
+from ..injection import register_fake_module
+
+# if you patching information with fake file.
+# package name = "foo.bar.boo"
+# then creating "./foo_bar_boo.py"
+
+
 def register_transforms(manager):
-    pass""")
+    transforms_dir = os.path.dirname(__file__)
+    register_fake_module(transforms_dir, manager)
+""")
 
 
 def setup_code(fg, name):
