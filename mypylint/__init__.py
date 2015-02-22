@@ -90,7 +90,6 @@ except IOError:
 
 install_requires = [
     'pylint',
-    'pylint-plugin-utils',
 ]
 
 setup(name='{name}',
