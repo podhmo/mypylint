@@ -62,7 +62,7 @@ skipping matched module(regex pattern match)
 
 in myplugin/plugin.py. It is enable to `ignore.register_ignore_module_pattern()`
 
-.. code-blcok:: python
+.. code-block:: python
 
   def register(linter, manager=MANAGER):
       transforms.register_transforms(manager)
